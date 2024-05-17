@@ -1,5 +1,5 @@
 import tkinter as tk
-import random
+from tkinter import PhotoImage
 
 def on_button_click(button_number):
     if button_number == 1:
@@ -9,11 +9,26 @@ def on_button_click(button_number):
     else:
         show_settings_screen()
 
+def show_start_screen():
+    start_frame.pack()
+    main_frame.pack_forget()
+    display_frame.pack_forget()
+    profile_frame.pack_forget()
+    settings_frame.pack_forget()
+
+def hide_start_screen():
+    start_frame.pack_forget()
+
+def start_next():
+    hide_start_screen()
+    show_main_screen()
+
 def show_main_screen():
     main_frame.pack()
     display_frame.pack_forget()
     profile_frame.pack_forget()
     settings_frame.pack_forget()
+    hide_all_settings_frames()
 
 def show_display_screen():
     main_frame.pack_forget()
@@ -23,12 +38,12 @@ def show_display_screen():
     update_display_values()
 
 def update_display_values():
-    battery_status_var.set(random.randint(0, 100))
-    light_intensity_var.set(random.randint(0, 100))
-    buzzer_intensity_var.set(random.randint(0, 100))
-    buzzer_hz_var.set(random.randint(0, 100))
-    haptic_intensity_var.set(random.randint(0, 100))
-    light_on_off_var.set(random.choice(["On", "Off"]))
+    battery_status_var.set(99)
+    light_intensity_var.set(50)
+    buzzer_intensity_var.set(75)  
+    buzzer_hz_var.set(1000)
+    haptic_intensity_var.set(50)  
+    light_on_off_var.set("On")
 
 def show_profile_screen():
     main_frame.pack_forget()
@@ -45,6 +60,8 @@ def display_profile_info():
     entry_email.insert(0, "Hannah@gmail.com")
     entry_phone.delete(0, tk.END)
     entry_phone.insert(0, "06982883748")
+    entry_cane.delete(0, tk.END)
+    entry_cane.insert(0, "001")
 
 def show_edit_screen():
     profile_frame.pack_forget()
@@ -52,11 +69,13 @@ def show_edit_screen():
     edit_name_entry.insert(0, entry_name.get())
     edit_email_entry.insert(0, entry_email.get())
     edit_phone_entry.insert(0, entry_phone.get())
+    edit_cane_entry.insert(0, entry_cane.get())
 
 def save_profile_changes():
     new_name = edit_name_entry.get()
     new_email = edit_email_entry.get()
     new_phone = edit_phone_entry.get()
+    new_cane = edit_cane_entry.get()
 
     # Update profile information
     entry_name.delete(0, tk.END)
@@ -65,6 +84,8 @@ def save_profile_changes():
     entry_email.insert(0, new_email)
     entry_phone.delete(0, tk.END)
     entry_phone.insert(0, new_phone)
+    entry_cane.delete(0, tk.END)
+    entry_cane.insert(0, new_cane)
 
     # Hide the edit frame and show the profile frame
     edit_frame.pack_forget()
@@ -123,69 +144,119 @@ def edit_profile():
 # Create the main window
 root = tk.Tk()
 root.title("LightUpCane")
-root.configure(bg="white")  # Set background color to white
+root.configure(bg="white")  
 
 # Set the window to full screen
 root.attributes('-fullscreen', True)
 
 # Create toolbar frame
-toolbar_frame = tk.Frame(root, bg="black")  # Set background color to black
+toolbar_frame = tk.Frame(root, bg="black")  
 toolbar_frame.pack(side="top", fill="x")
 
 # Add project name label to a frame with black background
 project_name_frame = tk.Frame(toolbar_frame, bg="black")
 project_name_frame.pack(padx=10, pady=5)
-project_name_label = tk.Label(project_name_frame, text="Light-up Cane", bg="black", fg="white", font=("Arial", 24))  # Set text color to white
+project_name_label = tk.Label(project_name_frame, text="LightUpCane", bg="black", fg="white", font=("Arial", 24))  
 project_name_label.pack()
+
+# Create start frame
+start_frame = tk.Frame(root, bg="black")
+start_label = tk.Label(start_frame, text="Pleaes connect your LightupCane!", bg="black", fg="light blue", font=("Arial", 15))
+start_label.pack(pady=50)
+
+# Load and display the image
+image = PhotoImage(file="LightupCane.png")
+image = image.subsample(3, 3)
+image_label = tk.Label(start_frame, image=image, bg="black")
+image_label.pack()
+
+next_button = tk.Button(start_frame, text="Next", command=start_next, bg="white", fg="black", width=20, font=("Arial", 14))
+next_button.pack(side="bottom", pady=50, anchor="s")
+
+# Pack the start frame
+start_frame.pack(expand=True, fill="both")
 
 # Create main frame
 main_frame = tk.Frame(root, bg="white")
 
 # Create display frame
 display_frame = tk.Frame(root, bg="white")
-display_label = tk.Label(display_frame, text="Display Screen", bg="white", font=("Arial", 30))  # Adjust font size for display
-display_label.pack(pady=(50, 10))  # Adjust padding for centering
+display_label = tk.Label(display_frame, text="Display Screen", bg="white", font=("Arial", 30, "bold"))  
+display_label.pack(pady=(50, 20))  
 
+# Create a frame to hold the display values
+display_values_frame = tk.Frame(display_frame, bg="white")
+display_values_frame.pack(pady=20)
+
+# Battery Status
+battery_frame = tk.Frame(display_values_frame, bg="white")
+battery_frame.pack(pady=10)
+battery_icon_label = tk.Label(battery_frame, text="🔋", bg="white", font=("Arial", 24))
+battery_icon_label.pack(side="left", padx=(0, 10))
+battery_status_label = tk.Label(battery_frame, text="Battery Status: ", bg="white", font=("Arial", 18))
+battery_status_label.pack(side="left")
 battery_status_var = tk.StringVar()
+battery_status_value = tk.Label(battery_frame, textvariable=battery_status_var, bg="white", font=("Arial", 18))
+battery_status_value.pack(side="left")
+
+# Light Intensity
+light_frame = tk.Frame(display_values_frame, bg="white")
+light_frame.pack(pady=10)
+light_icon_label = tk.Label(light_frame, text="💡", bg="white", font=("Arial", 24))
+light_icon_label.pack(side="left", padx=(0, 10))
+light_intensity_label = tk.Label(light_frame, text="Light Intensity: ", bg="white", font=("Arial", 18))
+light_intensity_label.pack(side="left")
 light_intensity_var = tk.StringVar()
+light_intensity_value = tk.Label(light_frame, textvariable=light_intensity_var, bg="white", font=("Arial", 18))
+light_intensity_value.pack(side="left")
+
+# Buzzer Intensity
+buzzer_frame = tk.Frame(display_values_frame, bg="white")
+buzzer_frame.pack(pady=10)
+buzzer_icon_label = tk.Label(buzzer_frame, text="🔊", bg="white", font=("Arial", 24))
+buzzer_icon_label.pack(side="left", padx=(0, 10))
+buzzer_intensity_label = tk.Label(buzzer_frame, text="Buzzer Intensity: ", bg="white", font=("Arial", 18))
+buzzer_intensity_label.pack(side="left")
 buzzer_intensity_var = tk.StringVar()
+buzzer_intensity_value = tk.Label(buzzer_frame, textvariable=buzzer_intensity_var, bg="white", font=("Arial", 18))
+buzzer_intensity_value.pack(side="left")
+
+# Buzzer Hz
+buzzer_hz_frame = tk.Frame(display_values_frame, bg="white")
+buzzer_hz_frame.pack(pady=10)
+buzzer_hz_icon_label = tk.Label(buzzer_hz_frame, text="🔊", bg="white", font=("Arial", 24))
+buzzer_hz_icon_label.pack(side="left", padx=(0, 10))
+buzzer_hz_label = tk.Label(buzzer_hz_frame, text="Buzzer Hz: ", bg="white", font=("Arial", 18))
+buzzer_hz_label.pack(side="left")
 buzzer_hz_var = tk.StringVar()
+buzzer_hz_value = tk.Label(buzzer_hz_frame, textvariable=buzzer_hz_var, bg="white", font=("Arial", 18))
+buzzer_hz_value.pack(side="left")
+
+# Haptic Intensity
+haptic_frame = tk.Frame(display_values_frame, bg="white")
+haptic_frame.pack(pady=10)
+haptic_icon_label = tk.Label(haptic_frame, text="📳", bg="white", font=("Arial", 24))
+haptic_icon_label.pack(side="left", padx=(0, 10))
+haptic_intensity_label = tk.Label(haptic_frame, text="Haptic Intensity: ", bg="white", font=("Arial", 18))
+haptic_intensity_label.pack(side="left")
 haptic_intensity_var = tk.StringVar()
-light_on_off_var = tk.StringVar()
+haptic_intensity_value = tk.Label(haptic_frame, textvariable=haptic_intensity_var, bg="white", font=("Arial", 18))
+haptic_intensity_value.pack(side="left")
 
-battery_status_label = tk.Label(display_frame, text="Battery Status: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-battery_status_label.pack()
-battery_status_value = tk.Label(display_frame, textvariable=battery_status_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-battery_status_value.pack()
-
-light_intensity_label = tk.Label(display_frame, text="Light Intensity: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-light_intensity_label.pack()
-light_intensity_value = tk.Label(display_frame, textvariable=light_intensity_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-light_intensity_value.pack()
-
-buzzer_intensity_label = tk.Label(display_frame, text="Buzzer Intensity: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-buzzer_intensity_label.pack()
-buzzer_intensity_value = tk.Label(display_frame, textvariable=buzzer_intensity_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-buzzer_intensity_value.pack()
-
-buzzer_hz_label = tk.Label(display_frame, text="Buzzer Hz: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-buzzer_hz_label.pack()
-buzzer_hz_value = tk.Label(display_frame, textvariable=buzzer_hz_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-buzzer_hz_value.pack()
-
-haptic_intensity_label = tk.Label(display_frame, text="Haptic Intensity: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-haptic_intensity_label.pack()
-haptic_intensity_value = tk.Label(display_frame, textvariable=haptic_intensity_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-haptic_intensity_value.pack()
-
-light_on_off_label = tk.Label(display_frame, text="Light On/Off: ", bg="white", font=("Arial", 18))  # Adjust font size for display values
-light_on_off_label.pack()
-light_on_off_value = tk.Label(display_frame, textvariable=light_on_off_var, bg="white", font=("Arial", 18))  # Adjust font size for display values
-light_on_off_value.pack()
+# Light On/Off
+light_on_off_frame = tk.Frame(display_values_frame, bg="white")
+light_on_off_frame.pack(pady=10)
+light_on_off_icon_label = tk.Label(light_on_off_frame, text="💡", bg="white", font=("Arial", 24))
+light_on_off_icon_label.pack(side="left", padx=(0, 10))
+light_on_off_label = tk.Label(light_on_off_frame, text="Light On/Off: ", bg="white", font=("Arial", 18))
+light_on_off_label.pack(side="left")
+light_on_off_var = tk.StringVar(value="On")  # Set light to "On"
+light_on_off_value = tk.Label(light_on_off_frame, textvariable=light_on_off_var, bg="white", font=("Arial", 18))
+light_on_off_value.pack(side="left")
 
 # Create a "Go Back" button in display frame
-go_back_button_display = tk.Button(display_frame, text="Go Back", command=go_back, bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Adjust font size for button
-go_back_button_display.pack(pady=20)  # Adjust top padding
+go_back_button_display = tk.Button(display_frame, text="Go Back", command=go_back, bg="black", fg="white", width=20, font=("Arial", 14))  
+go_back_button_display.pack(pady=20)  
 
 # Pack the display frame
 display_frame.pack(expand=True, fill="both")
@@ -211,6 +282,11 @@ label_phone.pack(pady=5)
 entry_phone = tk.Entry(profile_frame)
 entry_phone.pack(pady=5)
 
+label_cane = tk.Label(profile_frame, text="Cane:", bg="white")
+label_cane.pack(pady=5)
+entry_cane = tk.Entry(profile_frame)
+entry_cane.pack(pady=5)
+
 # Edit profile button
 edit_button = tk.Button(profile_frame, text="Edit", command=edit_profile, bg="black", fg="white")
 edit_button.pack(pady=10)
@@ -219,6 +295,7 @@ edit_button.pack(pady=10)
 initial_name = ""
 initial_email = ""
 initial_phone = ""
+initial_cane = ""
 
 # Create edit frame
 edit_frame = tk.Frame(root, bg="white")
@@ -237,6 +314,11 @@ edit_phone_label = tk.Label(edit_frame, text="Phone:", bg="white")
 edit_phone_label.pack(pady=5)
 edit_phone_entry = tk.Entry(edit_frame)
 edit_phone_entry.pack(pady=5)
+
+edit_cane_label = tk.Label(edit_frame, text="Cane:", bg="white")
+edit_cane_label.pack(pady=5)
+edit_cane_entry = tk.Entry(edit_frame)
+edit_cane_entry.pack(pady=5)
 
 save_changes_button = tk.Button(edit_frame, text="Save Changes", command=save_profile_changes, bg="black", fg="white")
 save_changes_button.pack(pady=10)
@@ -261,64 +343,100 @@ for part in ["Button", "Battery", "Light", "Properties"]:
     settings_buttons.append(button)
 
 # Button settings
-button_hold_time_var = tk.StringVar()
-button_hold_time_label = tk.Label(button_settings_frame, text="Hold Time: ", bg="white")
-button_hold_time_label.pack()
-button_hold_time_entry = tk.Entry(button_settings_frame, textvariable=button_hold_time_var)
-button_hold_time_entry.pack()
+button_categories = ["Change settings", "Battery status indication", "Toggle light"]
+option_buttons = []
+
+# Press duration selections
+duration_labels = ["Pressed for > 1.5 seconds", "Pressed for > 0.5 seconds", "Pressed for < 0.5 seconds"]
+duration_vars = [tk.StringVar(value=button_categories[0]) for _ in range(3)]
+
+for label_text, var in zip(duration_labels, duration_vars):
+    label = tk.Label(button_settings_frame, text=label_text, bg="white")
+    label.pack()
+    menu = tk.OptionMenu(button_settings_frame, var, *button_categories)
+    menu.pack()
 
 # Battery settings
-battery_life_var = tk.StringVar()
-battery_life_label = tk.Label(battery_settings_frame, text="Battery Life (%): ", bg="white")
-battery_life_label.pack()
-battery_life_entry = tk.Entry(battery_settings_frame, textvariable=battery_life_var)
-battery_life_entry.pack()
+battery_categories = ["1 beep-vibration", "2 beeps-vibrations", "3 beeps-vibrations", "4 beeps-vibrations"]
+option_battery = []
+
+# Battery selections
+battery_life_label = ["100-75%", "75-50%", "50-25%", "25-1%"]
+battery_life_vars = [tk.StringVar(value=battery_categories[0]) for _ in range(4)]
+
+for label_text, var in zip(battery_life_label, battery_life_vars):
+    label = tk.Label(battery_settings_frame, text=label_text, bg="white")
+    label.pack()
+    menu = tk.OptionMenu(battery_settings_frame, var, *battery_categories)
+    menu.pack()
 
 # Light settings
+light_categories = ["1 beep-vibration", "2 beeps-vibrations"]
+option_light = []
+
+# Lightselections
+light_label = ["On", "Off"]
+light_vars = [tk.StringVar(value=battery_categories[0]) for _ in range(2)]
+
+for label_text, var in zip(light_label, light_vars):
+    label = tk.Label(light_settings_frame, text=label_text, bg="white")
+    label.pack()
+    menu = tk.OptionMenu(light_settings_frame, var, *light_categories)
+    menu.pack()
+
 light_on_off_options = ["On", "Off"]
-light_on_off_var = tk.StringVar()
+light_on_off_var = tk.StringVar(value="On")  # Set light to "On"
 light_on_off_label = tk.Label(light_settings_frame, text="Light On/Off: ", bg="white")
 light_on_off_label.pack()
 light_on_off_option_menu = tk.OptionMenu(light_settings_frame, light_on_off_var, *light_on_off_options)
 light_on_off_option_menu.pack()
 
 # Properties settings
-buzzer_intensity_var = tk.StringVar()
-buzzer_intensity_label = tk.Label(properties_settings_frame, text="Buzzer Intensity: ", bg="white")
-buzzer_intensity_label.pack()
-buzzer_intensity_entry = tk.Entry(properties_settings_frame, textvariable=buzzer_intensity_var)
-buzzer_intensity_entry.pack()
+properties_categories = ["10%", "25%", "50%", "75%", "100%"]
+option_properties = []
 
-haptic_intensity_var = tk.StringVar()
-haptic_intensity_label = tk.Label(properties_settings_frame, text="Haptic Intensity: ", bg="white")
-haptic_intensity_label.pack()
-haptic_intensity_entry = tk.Entry(properties_settings_frame, textvariable=haptic_intensity_var)
-haptic_intensity_entry.pack()
+# Properties selections
+properties_label = ["Haptic intensity", "Buzzer intensity"]
+properties_vars = [tk.StringVar(value=properties_categories[0]) for _ in range(2)]
+
+for label_text, var in zip(properties_label, properties_vars):
+    label = tk.Label(properties_settings_frame, text=label_text, bg="white")
+    label.pack()
+    menu = tk.OptionMenu(properties_settings_frame, var, *properties_categories)
+    menu.pack()
+
+buzzer_frequency_options = ["100 Hz", "250 Hz", "500 Hz", "750 Hz", "1000 Hz"]
+buzzer_frequency_var = tk.StringVar(value="1000 Hz") 
+buzzer_frequency_label = tk.Label(properties_settings_frame, text="Buzzer frequency: ", bg="white")
+buzzer_frequency_label.pack()
+buzzer_frequency_option_menu = tk.OptionMenu(properties_settings_frame, buzzer_frequency_var, *buzzer_frequency_options)
+buzzer_frequency_option_menu.pack()
 
 # Create a "Go Back" button in profile frame
-go_back_button_profile = tk.Button(profile_frame, text="Go Back", command=go_back, bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Adjust font size for button
-go_back_button_profile.pack(pady=20)  # Adjust top padding
+go_back_button_profile = tk.Button(profile_frame, text="Go Back", command=go_back, bg="black", fg="white", width=20, height=2, font=("Arial", 14))  
+go_back_button_profile.pack(pady=20)  
 
 # Create a "Go Back" button in settings frame
-go_back_button_settings = tk.Button(settings_frame, text="Go Back", command=go_back, bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Adjust font size for button
-go_back_button_settings.pack(pady=20)  # Adjust top padding
+go_back_button_settings = tk.Button(settings_frame, text="Go Back", command=go_back, bg="black", fg="white", width=20, height=2, font=("Arial", 14))  
+go_back_button_settings.pack(pady=20)  
+ 
 
 # Create three bigger buttons with black background in main frame
-button2 = tk.Button(main_frame, text="Profile", command=lambda: on_button_click(2), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Set button background to black and text color to white
+button2 = tk.Button(main_frame, text="Profile", command=lambda: on_button_click(2), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  
 button2.pack(pady=5)
 
-button1 = tk.Button(main_frame, text="Display", command=lambda: on_button_click(1), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Set button background to black and text color to white
+button1 = tk.Button(main_frame, text="Display", command=lambda: on_button_click(1), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  
 button1.pack(pady=5)
 
-button3 = tk.Button(main_frame, text="Settings", command=lambda: on_button_click(3), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  # Set button background to black and text color to white
+button3 = tk.Button(main_frame, text="Settings", command=lambda: on_button_click(3), bg="black", fg="white", width=50, height=5, font=("Arial", 18))  
 button3.pack(pady=5)
 
 # Create a "Close" button in toolbar frame
 close_button = tk.Button(toolbar_frame, text="Close", command=close_program, bg="black", fg="white")
 close_button.pack(side="right", padx=10, pady=5)
 
-# Show the main screen initially
-show_main_screen()
+# Show the start screen initially
+show_start_screen()
 
 # Run the GUI
 root.mainloop()
