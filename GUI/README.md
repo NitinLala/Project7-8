@@ -12,10 +12,12 @@ Another optional feature is the text-to-speech function.
 This enables you to hear all written text, improving accessibility for visually impaired users and facilitating future interface usage.
 
 
-Requirements
-Python 3.x
-Tkinter (usually comes pre-installed with Python)
+Requirements:
+- Python 3.x
+- Tkinter (usually comes pre-installed with Python)
+  
 If not, Install the required dependencies by running:
+
 pip install tkinter
 
 Installation:
