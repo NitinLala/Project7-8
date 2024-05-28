@@ -41,16 +41,16 @@ Usage
 
 - Settings Screen: Users can adjust various settings including button settings, battery status indication, toggle light settings, and properties settings.
 
-Features
-User authentication.
-Multilingual support (English and Dutch).
-Profile management.
-Dynamic updating of display values.
-Settings customization.
-Text-to-speech options. 
+Features:
+- User authentication.
+- Multilingual support (English and Dutch).
+- Profile management.
+- Dynamic updating of display values.
+- Settings customization.
+- Text-to-speech options. 
 
-Supported Languages
-English
-Dutch
+Supported Languages:
+- English
+- Dutch
 
 
