@@ -4,12 +4,12 @@ GUI-codes:
 This GUI application is designed to control and monitor a light-up cane device. It provides functionalities to authenticate users, display information, manage profiles, and adjust settings.
 
 2. **taalVertaling**:
-Dit is een optionele toevoeging waarmee u de interface van Engels naar Nederlands kunt vertalen.
-Dit vergemakkelijkt het gebruik voor oudere hulpverleners die geen Engels spreken.
+This is an optional feature that allows you to translate the interface from English to Dutch.
+This facilitates usage for elderly caregivers who do not speak English.
 
 3. **tts**:
-Een andere optionele toevoeging is de text-to-speech functie.
-Hiermee kunt u alle geschreven tekst horen, wat de toegankelijkheid voor slechtzienden verbetert en het gebruik van de interface in de toekomst vergemakkelijkt.
+Another optional feature is the text-to-speech function.
+This enables you to hear all written text, improving accessibility for visually impaired users and facilitating future interface usage.
 
 
 Requirements
