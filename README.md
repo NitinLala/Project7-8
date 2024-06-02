@@ -16,7 +16,13 @@ Requirements:
   
 If not, Install the required dependencies by running:
 
-pip install tkinter
+pip install tkinter  
+
+for text-to-speech function: 
+pyttsx3 (usually comes pre-installed with Python)
+If not, Install the required dependencies by running:
+
+pip install pyttsx3
 
 Installation:
 Clone or download the repository to your local machine.
