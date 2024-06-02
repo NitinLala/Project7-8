@@ -32,7 +32,7 @@ Make sure you have Python installed.
 Run the application by executing the file.
 
 
-Usage
+Usage:
 - Start Screen: The application begins with a start screen prompting the user to connect the Light-up Cane.
 
 - Login Screen: After clicking the "Next" button, the login screen appears where the user needs to enter the correct cane number and click the "Login" button.
