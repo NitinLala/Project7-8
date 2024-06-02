@@ -1,13 +1,11 @@
 GUI-codes:
 
-1. **lightupCane**:
+1. **taalVertaling**:
 This GUI application is designed to control and monitor a light-up cane device. It provides functionalities to authenticate users, display information, manage profiles, and adjust settings.
-
-2. **taalVertaling**:
-This is an optional feature that allows you to translate the interface from English to Dutch.
+This GUI has an optional feature that allows you to translate the interface from English to Dutch.
 This facilitates usage for elderly caregivers who do not speak English.
 
-3. **tts**:
+2. **tts**:
 Another optional feature is the text-to-speech function.
 This enables you to hear all written text, improving accessibility for visually impaired users and facilitating future interface usage.
 
